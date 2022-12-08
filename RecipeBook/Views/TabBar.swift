@@ -14,6 +14,7 @@ struct TabBar: View {
 //    @FirestoreQuery(collectionPath: "recipes") var recipes: [Recipe]
     
     var body: some View {
+        
         TabView {
             RecipeListView(recipesVM: RecipesViewModel(), categoryRecipes: [Recipe()], isCategory: false)
                 .tabItem {
@@ -30,6 +31,7 @@ struct TabBar: View {
                     Label("New", systemImage: "plus")
                 }
         }
+        
     }
 }
 

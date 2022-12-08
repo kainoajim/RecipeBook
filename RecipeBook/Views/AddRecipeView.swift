@@ -16,6 +16,8 @@ struct AddRecipeView: View {
                 Text("Add a Recipe!")
             }
             .buttonStyle(.borderedProminent)
+            .tint(Color("RecipeColor"))
+            .font(.title)
 
         }
     }

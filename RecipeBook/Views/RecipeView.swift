@@ -32,7 +32,7 @@ struct RecipeView: View {
                     Text("Category - \(recipe.category.capitalized)")
                         .font(.title2)
                         .bold()
-
+                    
                     Text("Time - \(recipe.time)")
                         .font(.title2)
                         .fontWeight(.light)
@@ -62,7 +62,7 @@ struct RecipeView: View {
                     .font(.title)
                     .bold()
                     .padding(.top)
-
+                
                 //this shows the image
                 if imageURL != nil {
                     AsyncImage(url: imageURL) { image in
@@ -86,6 +86,9 @@ struct RecipeView: View {
                         Button("Edit") {
                             isSheetPresented.toggle()
                         }
+                        .buttonStyle(.borderedProminent)
+                        .tint(Color("RecipeColor"))
+                        
                     }
                 }
             }
@@ -109,6 +112,8 @@ struct RecipeView: View {
                 NewRecipeView(recipe: recipe)
             }
         }
+        
+        
         
     }
 }

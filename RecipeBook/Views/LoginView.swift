@@ -20,74 +20,86 @@ struct LoginView: View {
     @State private var presentSheet = false
     @FocusState private var focusField: Field?
     var body: some View {
-        VStack {
-            Image(systemName: "photo")
-                .resizable()
-                .scaledToFit()
-                .padding()
-            Group {
-                TextField("E-mail", text: $email)
-                    .keyboardType(.emailAddress)
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
-                    .submitLabel(.next)
-                    .focused($focusField, equals: .email)//field is bound to .email case
-                    .onSubmit {
-                        focusField = .password // will switch to password field
-                    }
-                    .onChange(of: email) { _ in
-                        enableButtons()
-                    }
-                SecureField("Password", text: $password)
-                    .textInputAutocapitalization(.never)
-                    .submitLabel(.done)
-                    .focused($focusField, equals: .password)//field is bound to .password case
-                    .onSubmit {
-                        focusField = nil // will dismiss keyboard
-                    }
-                    .onChange(of: password) { _ in
-                        enableButtons()
-                    }
-            }
-            .textFieldStyle(.roundedBorder)
-            .overlay {
-                RoundedRectangle(cornerRadius: 5)
-                    .stroke(.gray.opacity(0.5), lineWidth: 2)
-            }
-            .padding(.horizontal)
-            HStack {
-                Button {
-                    register()
-                } label: {
-                    Text("Sign Up")
+        ZStack {
+            Color("RecipeColor")
+                .ignoresSafeArea()
+            VStack {
+                
+                Text("RecipeBook")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                
+                Image("goodphoto")
+                    .resizable()
+                    .scaledToFit()
+                    .padding()
+                Group {
+                    TextField("E-mail", text: $email)
+                        .keyboardType(.emailAddress)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .submitLabel(.next)
+                        .focused($focusField, equals: .email)//field is bound to .email case
+                        .onSubmit {
+                            focusField = .password // will switch to password field
+                        }
+                        .onChange(of: email) { _ in
+                            enableButtons()
+                        }
+                    SecureField("Password", text: $password)
+                        .textInputAutocapitalization(.never)
+                        .submitLabel(.done)
+                        .focused($focusField, equals: .password)//field is bound to .password case
+                        .onSubmit {
+                            focusField = nil // will dismiss keyboard
+                        }
+                        .onChange(of: password) { _ in
+                            enableButtons()
+                        }
                 }
-                .padding(.trailing)
-                Button {
-                    login()
-                } label: {
-                    Text("Log In")
+                .textFieldStyle(.roundedBorder)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(.gray.opacity(0.5), lineWidth: 2)
                 }
-                .padding(.leading)
+                .padding(.horizontal)
+                HStack {
+                    Button {
+                        register()
+                    } label: {
+                        Text("Sign Up")
+                    }
+                    .padding(.trailing)
+                    Button {
+                        login()
+                    } label: {
+                        Text("Log In")
+                    }
+                    .padding(.leading)
+                }
+                .disabled(buttonsDisabled)
+                .buttonStyle(.borderedProminent)
+                .tint(.white)
+                .font(.title2)
+                .foregroundColor(.black)
+                .padding(.top)
             }
-            .disabled(buttonsDisabled)
-            .buttonStyle(.borderedProminent)
-//            .tint(Color("SnackColor"))
-            .font(.title2)
-            .padding(.top)
-        }
-        .alert(alertMessage, isPresented: $showingAlert) {
-            Button("OK", role: .cancel) {}
-        }
-        .onAppear {
-            // if logged in when app runs, navigate to new screen and skip login
-            if Auth.auth().currentUser != nil {
-                print("🪵 Login Successful!")
-                presentSheet = true
+            .alert(alertMessage, isPresented: $showingAlert) {
+                Button("OK", role: .cancel) {}
+            }
+            .onAppear {
+                // if logged in when app runs, navigate to new screen and skip login
+                if Auth.auth().currentUser != nil {
+                    print("🪵 Login Successful!")
+                    presentSheet = true
+                }
+            }
+            .fullScreenCover(isPresented: $presentSheet) {
+                HomeView()
             }
         }
-        .fullScreenCover(isPresented: $presentSheet) {
-            HomeView()
-        }
+        
     }
     func enableButtons() {
         let emailIsGood = email.count >= 6 && email.contains("@")

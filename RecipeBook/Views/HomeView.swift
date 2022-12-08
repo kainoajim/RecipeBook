@@ -13,9 +13,8 @@ struct HomeView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-       
-        TabBar()
         
+        TabBar()
     }
 }
 
